@@ -1,11 +1,13 @@
 "color murphy
 "color desert
-color luinnar
-"color blue
+color elda
 "color ron
-set tags=./.tags;/,~/.tags,~/.arm_tags
+set nu
+set tags=./.ctags;/,~/.ctags
 set dir=~/tmp
 set updatecount=0
+"tab size
+set tabstop=8
 set nocompatible"non-compatible mode with old vi
 "syntax on
 filetype plugin indent on
@@ -22,7 +24,6 @@ set confirm"dialogs instead of error messages
 autocmd! bufwritepost $MYVIMRC source $MYVIMRC
 set statusline=%F%m%r%h%w\ [FORM,ENC=%{&ff},%{&encoding}\]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 set laststatus=2
-set nu
 
 "set listchars=tab:>-,trail:-
 "set list
@@ -46,7 +47,6 @@ set smartcase
 set hls
 set incsearch
 
-
 "Folding options
 "set foldenable
 "set foldmethod=syntax
@@ -55,21 +55,20 @@ set incsearch
 "set foldopen=all
 
 "tab options
-set shiftwidth=2
-set tabstop=2
-set softtabstop=2
+set shiftwidth=8
+"set softtabstop=2
 set autoindent
-set cindent
+"set cindent
 "set expandtab
 set smartindent
 au FileType crontab,fstab,make set noexpandtab tabstop=8 shiftwidth=8
 
 "file options
 if has('win32')
-  set encoding=cp1251
+	set encoding=cp1251
 else
-  set encoding=utf-8
-  set termencoding=utf-8
+	set encoding=utf-8
+	set termencoding=utf-8
 endif
 set ffs=unix,dos,mac
 set fencs=utf-8,cp1251,koi8-r,cp866
@@ -79,15 +78,29 @@ filetype plugin on
 filetype indent on
 
 if has('win32')
-    let $VIMRUNTIME = $HOME.'\Programs\Vim\vim72'
-    source $VIMRUNTIME/mswin.vim
+	let $VIMRUNTIME = $HOME.'\Programs\Vim\vim72'
+	source $VIMRUNTIME/mswin.vim
 else
-    let $VIMRUNTIME = $HOME.'/.vim'
+	let $VIMRUNTIME = $HOME.'/.vim'
 endif
 
 if has('gui')
-    set guioptions-=T " отключить меню в GUI
-    "au GUIEnter * :set lines=99999 columns=99999
+	set guioptions-=T " отключить меню в GUI
+	"au GUIEnter * :set lines=99999 columns=99999
+endif
+
+if has("gui_running")
+	if has("gui_gtk2")
+		set guifont=Courier\ New\ 14
+	elseif has("gui_photon")
+		set guifont=Courier\ New:s14
+	elseif has("gui_kde")
+		set guifont=Courier\ New/14/-1/5/50/0/0/0/1/0
+	elseif has("x14")
+		set guifont=-*-courier-medium-r-normal-*-*-180-*-*-m-*-*
+	else
+		set guifont=Courier_New:h14:cDEFAULT
+	endif
 endif
 
 let mapleader=","
@@ -134,3 +147,12 @@ map <Leader>T :call FindTextUsage( expand("<cword>") )<CR>
 map <F4> [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
 
 map <silent> gc xph
+
+map <F5> :copen<CR>
+map <F6> :cprevious<CR>
+map <F7> :cnext<CR>
+
+:highlight ExtraWhitespace ctermbg=darkgreen guibg=#571717
+:auto Syntax * syn match ExtraWhitespace /\s\+$\|^ \+\| \+\ze\t/
+:highlight ExtraWhitespaceEOL ctermbg=red guibg=#A02020
+:auto Syntax * syn match ExtraWhitespaceEOL /[ \t]\+$/

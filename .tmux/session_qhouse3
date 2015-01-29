@@ -1,0 +1,30 @@
+# Local test interface
+new -s Session
+# New window with pane 0 for AP
+neww -k -n LocalTest "ssh_ap qh3"
+#\"pkill -9 minicom; rm -f ap_log.txt; minicom -C ap_log.txt\""
+selectw -t LocalTest
+# New panes for STA1 and STA2
+splitw -v -p 50 "ssh_sta1 qh3"
+#\"pkill -9 minicom; rm -f sta1_log.txt; minicom -C sta1_log.txt\""
+splitw -v -p 50 "ssh_sta2 qh3"
+#"\"pkill -9 minicom; rm -f sta2_log.txt; minicom -C sta2_log.txt\""
+# Normalize pane sizes
+select-layout even-vertical
+# create a side pane for AP pane with two iperfs
+selectp -t 0
+# new panes has numbers 1 and 2
+splitw -h -p 50 "ssh_ap_iperf_sta1 qh3"
+selectp -t 4
+#splitw -v -p 50
+splitw -v -p 50 "ssh_ap_iperf_sta2 qh3"
+# create a side pane for STA1 pane with iperf in it
+selectp -t 3
+# new panes has numbers 3 and 4
+#splitw -h -p 50
+splitw -h -p 50 "ssh_sta1_iperf_ap qh3"
+# create a side pane for STA2 pane with iperf in it
+selectp -t 5
+# new panes has numbers 5 and 6
+#splitw -h -p 50
+splitw -h -p 50 "ssh_sta2_iperf_ap qh3"
